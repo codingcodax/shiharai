@@ -1,5 +1,5 @@
-import { invalidateSessionToken } from "~/server/auth";
-import { protectedProcedure } from "../../trpc";
+import { invalidateSessionToken } from '~/server/auth';
+import { protectedProcedure } from '../../trpc';
 
 export const signOut = protectedProcedure.mutation(async (opts) => {
   if (!opts.ctx.token) return { success: false };
