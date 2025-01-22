@@ -28,10 +28,12 @@ import { db } from "~/server/db";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
+  const authToken = opts.headers.get("Authorization") ?? null;
 
   return {
     db,
     session,
+    token: authToken,
     ...opts,
   };
 };
