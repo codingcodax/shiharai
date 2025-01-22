@@ -1,6 +1,7 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import GithubProvider from "next-auth/providers/github";
+import { env } from "~/env";
 
 import { db } from "~/server/db";
 import {
@@ -31,30 +32,23 @@ declare module "next-auth" {
   // }
 }
 
+const adapter = DrizzleAdapter(db, {
+  usersTable: users,
+  accountsTable: accounts,
+  sessionsTable: sessions,
+  verificationTokensTable: verificationTokens,
+});
+
+export const isSecureContext = env.NODE_ENV !== "development";
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig = {
-  providers: [
-    DiscordProvider,
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-  ],
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
+  adapter,
+  providers: [GithubProvider],
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -65,3 +59,21 @@ export const authConfig = {
     }),
   },
 } satisfies NextAuthConfig;
+
+export const validateToken = async (token: string) => {
+  const sessionToken = token.slice("Bearer ".length);
+  const session = await adapter.getSessionAndUser?.(sessionToken);
+  return session
+    ? {
+        user: {
+          ...session.user,
+        },
+        expires: session.session.expires.toISOString(),
+      }
+    : null;
+};
+
+export const invalidateSessionToken = async (token: string) => {
+  const sessionToken = token.slice("Bearer ".length);
+  await adapter.deleteSession?.(sessionToken);
+};
