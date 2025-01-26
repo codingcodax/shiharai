@@ -3,12 +3,14 @@ import animate from 'tailwindcss-animate';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 export default {
+  darkMode: 'class',
   content: ['./src/**/*.tsx'],
   theme: {
     extend: {
       fontFamily: {
         sans: ['var(--font-geist-sans)', ...fontFamily.sans],
       },
+      borderColor: { DEFAULT: 'hsl(var(--grey-6))' },
       borderRadius: {
         none: '0px',
         sm: 'calc(var(--radius) - 3px)',
