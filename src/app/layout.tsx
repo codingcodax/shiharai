@@ -2,6 +2,7 @@ import '~/styles/globals.css';
 
 import { type Metadata, type Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
+import { ThemeProvider } from 'next-themes';
 
 import { TRPCReactProvider } from '~/trpc/react';
 
@@ -55,9 +56,23 @@ export const viewport: Viewport = {
 
 const RootLayout = ({ children }: Readonly<React.PropsWithChildren>) => {
   return (
-    <html className={`${GeistSans.variable}`} lang='en'>
+    <html
+      suppressHydrationWarning
+      className={`${GeistSans.variable}`}
+      lang='en'
+    >
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <ThemeProvider enableSystem attribute='class' defaultTheme='system'>
+            <div
+              className='min-h-dvh bg-grey-base text-grey-text-contrast'
+              // eslint-disable-next-line react/no-unknown-property
+              vaul-drawer-wrapper=''
+            >
+              {children}
+            </div>
+          </ThemeProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
