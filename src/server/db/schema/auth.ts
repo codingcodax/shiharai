@@ -10,6 +10,7 @@ import {
 import { type AdapterAccount } from 'next-auth/adapters';
 
 import { createTable } from './_table';
+import { categories, paymentMethods, subscriptions } from './subscription';
 
 export const users = createTable('user', {
   id: varchar('id', { length: 255 })
@@ -23,10 +24,23 @@ export const users = createTable('user', {
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar('image', { length: 255 }),
+  timezone: varchar('timezone', { length: 255 }),
+  currency: varchar('currency', { length: 255 }),
+  createdAt: timestamp('created_at', {
+    mode: 'date',
+    withTimezone: true,
+  }).notNull(),
+  updatedAt: timestamp('updated_at', {
+    mode: 'date',
+    withTimezone: true,
+  }).notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  subscriptions: many(subscriptions),
+  categories: many(categories),
+  paymentMethods: many(paymentMethods),
 }));
 
 export const accounts = createTable(
