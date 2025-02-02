@@ -94,7 +94,7 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   subscriptions: many(subscriptions),
 }));
 
-const paymentTypeEnum = pgEnum('type', [
+const paymentTypeEnum = pgEnum('shiharai_type', [
   'CREDIT_CARD',
   'DEBIT_CARD',
   'PAYPAL',
