@@ -13,7 +13,7 @@ import {
 import { createTable } from './_table';
 import { users } from './auth';
 
-const statusEnum = pgEnum('shiharai_subscription_status', [
+export const statusEnum = pgEnum('shiharai_subscription_status', [
   'ACTIVE',
   'PAUSED',
   'CANCELLED',
@@ -94,7 +94,7 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   subscriptions: many(subscriptions),
 }));
 
-const paymentTypeEnum = pgEnum('shiharai_payment_type', [
+export const paymentTypeEnum = pgEnum('shiharai_payment_type', [
   'CREDIT_CARD',
   'DEBIT_CARD',
   'PAYPAL',
@@ -115,7 +115,7 @@ export const paymentMethods = createTable('payment_method', {
   userId: varchar('user_id', { length: 255 })
     .notNull()
     .references(() => users.id),
-  type: paymentTypeEnum('type').notNull(),
+  type: paymentTypeEnum('type').notNull().default('CREDIT_CARD'),
   label: varchar('name', { length: 255 }).notNull(),
   expirationDate: timestamp('expiration_date', {
     mode: 'date',
