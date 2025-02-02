@@ -13,7 +13,7 @@ import {
 import { createTable } from './_table';
 import { users } from './auth';
 
-const statusEnum = pgEnum('status', [
+const statusEnum = pgEnum('shiharai_status', [
   'ACTIVE',
   'PAUSED',
   'CANCELLED',
