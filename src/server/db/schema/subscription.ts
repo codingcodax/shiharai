@@ -13,7 +13,7 @@ import {
 import { createTable } from './_table';
 import { users } from './auth';
 
-const statusEnum = pgEnum('shiharai_status', [
+const statusEnum = pgEnum('shiharai_subscription_status', [
   'ACTIVE',
   'PAUSED',
   'CANCELLED',
@@ -94,7 +94,7 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   subscriptions: many(subscriptions),
 }));
 
-const paymentTypeEnum = pgEnum('shiharai_type', [
+const paymentTypeEnum = pgEnum('shiharai_payment_type', [
   'CREDIT_CARD',
   'DEBIT_CARD',
   'PAYPAL',
