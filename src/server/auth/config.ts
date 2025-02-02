@@ -3,7 +3,7 @@ import { type DefaultSession, type NextAuthConfig } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 
 import { env } from '~/env';
-import { db } from '~/server/db';
+import { db } from '~/server/db/client';
 import {
   accounts,
   sessions,
