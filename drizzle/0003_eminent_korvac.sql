@@ -1,0 +1,2 @@
+ALTER TABLE "shiharai_payment_method" ALTER COLUMN "type" SET DATA TYPE shiharai_payment_type;--> statement-breakpoint
+ALTER TABLE "shiharai_subscription" ALTER COLUMN "status" SET DATA TYPE shiharai_subscription_status;
