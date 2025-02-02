@@ -1,0 +1,1 @@
+ALTER TABLE "shiharai_subscription" ALTER COLUMN "status" SET DATA TYPE shiharai_status;
