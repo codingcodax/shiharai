@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
   boolean,
   doublePrecision,
@@ -50,11 +50,16 @@ export const subscriptions = createTable('subscription', {
   createdAt: timestamp('created_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp('updated_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`)
+    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
 export const subscriptionsRelations = relations(
@@ -82,11 +87,16 @@ export const categories = createTable('category', {
   createdAt: timestamp('created_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp('updated_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`)
+    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
@@ -125,11 +135,16 @@ export const paymentMethods = createTable('payment_method', {
   createdAt: timestamp('created_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp('updated_at', {
     mode: 'date',
     withTimezone: true,
-  }).notNull(),
+  })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`)
+    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
 export const paymentMethodsRelations = relations(paymentMethods, ({ one }) => ({
