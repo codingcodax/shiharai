@@ -1,6 +1,6 @@
 {
-  "id": "dfb2dbfa-4dc2-4c36-b413-acfb4c348d15",
-  "prevId": "834c7367-e345-439a-892c-a603faf924ff",
+  "id": "c95fea60-705f-42ba-ac59-c1700f2b5002",
+  "prevId": "06b86cf7-cff1-4961-9e53-cb1f1459b2c3",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -116,7 +116,10 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_session": {
       "name": "shiharai_session",
@@ -174,7 +177,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_user": {
       "name": "shiharai_user",
@@ -227,19 +233,24 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_verification_token": {
       "name": "shiharai_verification_token",
@@ -275,7 +286,10 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_category": {
       "name": "shiharai_category",
@@ -315,13 +329,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -341,7 +357,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_payment_method": {
       "name": "shiharai_payment_method",
@@ -361,10 +380,11 @@
         },
         "type": {
           "name": "type",
-          "type": "type",
+          "type": "shiharai_payment_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'CREDIT_CARD'"
         },
         "name": {
           "name": "name",
@@ -389,13 +409,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -415,7 +437,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.shiharai_subscription": {
       "name": "shiharai_subscription",
@@ -498,7 +523,7 @@
         },
         "status": {
           "name": "status",
-          "type": "status",
+          "type": "shiharai_subscription_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -526,13 +551,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -552,12 +579,45 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.shiharai_payment_type": {
+      "name": "shiharai_payment_type",
+      "schema": "public",
+      "values": [
+        "CREDIT_CARD",
+        "DEBIT_CARD",
+        "PAYPAL",
+        "VENMO",
+        "CASH_APP",
+        "GOOGLE_PAY",
+        "APPLE_PAY",
+        "SAMSUNG_PAY",
+        "BANK_TRANSFER",
+        "OTHER"
+      ]
+    },
+    "public.shiharai_subscription_status": {
+      "name": "shiharai_subscription_status",
+      "schema": "public",
+      "values": [
+        "ACTIVE",
+        "PAUSED",
+        "CANCELLED",
+        "EXPIRED"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
