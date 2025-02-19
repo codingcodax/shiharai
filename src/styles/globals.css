@@ -179,4 +179,16 @@
     -moz-appearance: textfield;
     appearance: textfield;
   }
+
+  div[aria-invalid='true'] input:focus {
+    --tw-ring-color: hsl(var(--error-8));
+  }
+
+  div[aria-invalid='true'] * {
+    border-color: hsl(var(--error-7));
+  }
+
+  div[aria-invalid='true'] *:hover {
+    border-color: hsl(var(--error-8));
+  }
 }
