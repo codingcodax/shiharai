@@ -1,7 +1,9 @@
+import { NewSubscriptionForm } from './_components/new-subscription-form';
+
 const Page = () => {
   return (
-    <div>
-      <p>new page</p>
+    <div className='pb-[59px]'>
+      <NewSubscriptionForm />
     </div>
   );
 };
