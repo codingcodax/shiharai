@@ -3,13 +3,13 @@ import { z } from 'zod';
 export type NewSubscription = z.infer<typeof NewSubscription>;
 export const NewSubscription = z.object({
   // details
-  logo: z.string(),
+  logo: z.string().url({ message: 'Enter a valid URL' }),
   name: z
-    .string({ message: 'Enter a name for your subscription' })
-    .min(2, 'Enter a name for your subscription'),
+    .string({ message: 'Enter the name of your subscription' })
+    .min(2, 'Enter the name of your subscription'),
   price: z
-    .number({ message: 'Enter a price for your subscription' })
-    .min(1, { message: 'Enter a price for your subscription' }),
+    .number({ message: 'Enter the price of your subscription' })
+    .min(1, { message: 'Enter the price of your subscription' }),
   currency: z.string({ message: 'Select a currency' }),
   freeTrial: z.boolean(),
   trialDays: z.number(),
@@ -60,3 +60,12 @@ export const NewSubscriptionDetails = NewSubscription.pick({
     path: ['trialDays'],
   },
 );
+
+export type NewSubscriptionBillingInfo = z.infer<
+  typeof NewSubscriptionBillingInfo
+>;
+export const NewSubscriptionBillingInfo = NewSubscription.pick({
+  billingCycle: true,
+  nextBillingDate: true,
+  timezone: true,
+});
