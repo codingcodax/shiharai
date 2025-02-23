@@ -80,7 +80,10 @@ export const DetailsStep = () => {
                 <FormItem>
                   <FormLabel>Logo</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder='Logo' />
+                    <Input
+                      {...field}
+                      placeholder='https://i.imgur.com/dJJHsuf.png'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,7 +109,7 @@ export const DetailsStep = () => {
               name='price'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel htmlFor='price'>Price</FormLabel>
                   <FormControl>
                     <div
                       className={clsx(
@@ -135,11 +138,13 @@ export const DetailsStep = () => {
                         autoComplete='off'
                         autoCorrect='off'
                         className='border-0 px-12'
+                        id='price'
                         inputMode='numeric'
                         placeholder='24.99'
                         spellCheck={false}
                         type='number'
                         value={field.value === 0 ? '' : field.value}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                       <Button
                         icon
@@ -309,7 +314,7 @@ export const DetailsStep = () => {
                   name='trialDays'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Trial Days</FormLabel>
+                      <FormLabel htmlFor='trial-days'>Trial Days</FormLabel>
                       <FormControl>
                         <div
                           className={clsx(
@@ -340,11 +345,15 @@ export const DetailsStep = () => {
                             autoComplete='off'
                             autoCorrect='off'
                             className='grou-aria-invalid:focus:ring-error-focus-ring border-0 px-12'
+                            id='trial-days'
                             inputMode='numeric'
                             placeholder='30'
                             spellCheck={false}
                             type='number'
                             value={field.value === 0 ? '' : field.value}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
                           />
                           <Button
                             icon
