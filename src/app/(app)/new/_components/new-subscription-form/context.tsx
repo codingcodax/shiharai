@@ -53,7 +53,7 @@ export const NewSubscriptionContextProvider = ({
     nextBillingDate: new Date(),
     freeTrial: false,
     trialDays: 0,
-    timezone: 'UTC',
+    timezone: 'America/Mexico_City',
     tier: '',
     url: '',
     notes: '',
