@@ -1,5 +1,10 @@
-import { useRef, useState } from 'react';
-import { CalendarIcon, CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
+import { useId, useRef, useState } from 'react';
+import {
+  CalendarIcon,
+  CaretSortIcon,
+  CheckIcon,
+  ClockIcon,
+} from '@radix-ui/react-icons';
 import { clsx } from 'clsx/lite';
 import { format } from 'date-fns';
 
@@ -22,6 +27,8 @@ import {
   FormMessage,
   useForm,
 } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
 import {
   Popover,
   PopoverContent,
@@ -41,6 +48,7 @@ import { NewSubscriptionBillingInfo } from './schema';
 export const BillingInfoStep = () => {
   const [timezoneIsOpen, setTimezoneIsOpen] = useState(false);
   const timezoneButtonRef = useRef<HTMLButtonElement>(null);
+  const timeId = useId();
   const { formData, updateFormData, prevStep, nextStep } =
     useNewSubscriptionContext();
 
@@ -121,12 +129,57 @@ export const BillingInfoStep = () => {
                       <Calendar
                         autoFocus
                         disabled={(date) =>
-                          date > new Date() || date < new Date('1900-01-01')
+                          date <
+                            new Date(
+                              new Date().getTime() - 1 * 24 * 60 * 60 * 1000,
+                            ) || date < new Date(new Date().getFullYear() + 1)
                         }
                         mode='single'
                         selected={field.value}
                         onSelect={field.onChange}
                       />
+                      <div className='border-t p-3'>
+                        <div className='flex items-center gap-3'>
+                          <Label className='sr-only' htmlFor={timeId}>
+                            Enter time
+                          </Label>
+                          <div className='relative grow'>
+                            <Input
+                              className='peer appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
+                              defaultValue={`${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}:${String(new Date().getSeconds()).padStart(2, '0')}`}
+                              id={timeId}
+                              step='1'
+                              type='time'
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value) {
+                                  const nextBillingDate =
+                                    form.getValues('nextBillingDate');
+                                  const [hour, minute, second] = value
+                                    .split(':')
+                                    .map((v) => parseInt(v, 10));
+                                  const updatedNextBillingDate = new Date(
+                                    nextBillingDate.getTime() +
+                                      (hour ?? 0) * 60 * 60 * 1000 +
+                                      (minute ?? 0) * 60 * 1000 +
+                                      (second ?? 0) * 1000,
+                                  );
+                                  form.setValue(
+                                    'nextBillingDate',
+                                    updatedNextBillingDate,
+                                  );
+                                }
+                              }}
+                            />
+                            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-grey-text peer-disabled:text-grey-solid'>
+                              <ClockIcon
+                                aria-hidden='true'
+                                className='size-4'
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
