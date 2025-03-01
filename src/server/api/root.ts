@@ -1,8 +1,9 @@
 import { authRouter } from '~/server/api/routers/auth';
 import { categoryRouter } from '~/server/api/routers/category';
+import { paymentMethodRouter } from '~/server/api/routers/payment-method';
+import { subscriptionRouter } from '~/server/api/routers/subscription';
 import { userRouter } from '~/server/api/routers/user';
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
-import { paymentMethodRouter } from './routers/payment-method';
 
 /**
  * This is the primary router for your server.
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   category: categoryRouter,
   paymentMethod: paymentMethodRouter,
+  subscription: subscriptionRouter,
   user: userRouter,
 });
 
