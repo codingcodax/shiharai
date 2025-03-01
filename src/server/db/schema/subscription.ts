@@ -28,6 +28,9 @@ export const subscriptions = createTable('subscription', {
   userId: varchar('user_id', { length: 255 })
     .notNull()
     .references(() => users.id),
+  paymentMethodId: varchar('payment_method_id', { length: 255 }).references(
+    () => paymentMethods.id,
+  ),
   logo: varchar('logo', { length: 255 }),
   name: varchar('name', { length: 255 }).notNull(),
   price: doublePrecision('price').notNull(),
@@ -68,6 +71,10 @@ export const subscriptionsRelations = relations(
     user: one(users, {
       fields: [subscriptions.userId],
       references: [users.id],
+    }),
+    paymentMethod: one(paymentMethods, {
+      fields: [subscriptions.paymentMethodId],
+      references: [paymentMethods.id],
     }),
     categories: many(categories),
   }),
@@ -147,6 +154,13 @@ export const paymentMethods = createTable('payment_method', {
     .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
-export const paymentMethodsRelations = relations(paymentMethods, ({ one }) => ({
-  user: one(users, { fields: [paymentMethods.userId], references: [users.id] }),
-}));
+export const paymentMethodsRelations = relations(
+  paymentMethods,
+  ({ one, many }) => ({
+    user: one(users, {
+      fields: [paymentMethods.userId],
+      references: [users.id],
+    }),
+    subscriptions: many(subscriptions),
+  }),
+);
