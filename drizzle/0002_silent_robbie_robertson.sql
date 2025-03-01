@@ -1,0 +1,2 @@
+ALTER TABLE "shiharai_subscription" ADD COLUMN "payment_method_id" varchar(255);--> statement-breakpoint
+ALTER TABLE "shiharai_subscription" ADD CONSTRAINT "shiharai_subscription_payment_method_id_shiharai_payment_method_id_fk" FOREIGN KEY ("payment_method_id") REFERENCES "public"."shiharai_payment_method"("id") ON DELETE no action ON UPDATE no action;
