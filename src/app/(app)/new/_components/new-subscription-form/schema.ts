@@ -35,6 +35,9 @@ export const NewSubscription = z.object({
   billingCycle: z.string(),
   nextBillingDate: z.date(),
   timezone: z.string(),
+  paymentMethodId: z
+    .string({ message: 'Select a payment method' })
+    .min(1, { message: 'Select a payment method' }),
 });
 
 export type NewSubscriptionDetails = z.infer<typeof NewSubscriptionDetails>;
@@ -68,4 +71,24 @@ export const NewSubscriptionBillingInfo = NewSubscription.pick({
   billingCycle: true,
   nextBillingDate: true,
   timezone: true,
+  paymentMethodId: true,
+});
+
+export type NewPaymentMethod = z.infer<typeof NewPaymentMethod>;
+export const NewPaymentMethod = z.object({
+  type: z.enum([
+    'CREDIT_CARD',
+    'DEBIT_CARD',
+    'PAYPAL',
+    'VENMO',
+    'CASH_APP',
+    'GOOGLE_PAY',
+    'APPLE_PAY',
+    'SAMSUNG_PAY',
+    'BANK_TRANSFER',
+    'OTHER',
+  ]),
+  label: z.string(),
+  expirationDate: z.date(),
+  isDefault: z.boolean(),
 });
