@@ -89,6 +89,6 @@ export const NewPaymentMethod = z.object({
     'OTHER',
   ]),
   label: z.string(),
-  expirationDate: z.date(),
+  expirationDate: z.date().optional(),
   isDefault: z.boolean(),
 });
