@@ -1,3 +1,5 @@
+'use client';
+
 import type { DropdownNavProps, DropdownProps } from 'react-day-picker';
 import { useRef, useState } from 'react';
 import { CalendarIcon, CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
@@ -40,7 +42,11 @@ import { Switch } from '~/components/ui/switch';
 import { paymentMethodTypes } from '~/config/payment-methods';
 import { NewPaymentMethod } from './schema';
 
-export const NewPaymentMethodForm = () => {
+type Props = {
+  createPaymentMethodAction: (input: NewPaymentMethod) => void;
+};
+
+export const NewPaymentMethodForm = ({ createPaymentMethodAction }: Props) => {
   const [typeIsOpen, setTypeIsOpen] = useState(false);
   const paymentMethodTypeButtonRef = useRef<HTMLButtonElement>(null);
   const form = useForm({
@@ -66,7 +72,7 @@ export const NewPaymentMethodForm = () => {
   };
 
   const onSubmit = (data: NewPaymentMethod) => {
-    console.log(data);
+    createPaymentMethodAction(data);
   };
 
   return (
