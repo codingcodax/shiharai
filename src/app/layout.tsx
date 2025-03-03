@@ -4,6 +4,7 @@ import { type Metadata, type Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 
+import { Toaster } from '~/components/ui/sonner';
 import { TRPCReactProvider } from '~/trpc/react';
 
 export const metadata: Metadata = {
@@ -73,6 +74,7 @@ const RootLayout = ({ children }: Readonly<React.PropsWithChildren>) => {
             </div>
           </ThemeProvider>
         </TRPCReactProvider>
+        <Toaster richColors position='top-center' />
       </body>
     </html>
   );
