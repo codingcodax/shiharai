@@ -5,6 +5,7 @@ import { protectedProcedure } from '../../trpc';
 
 const schema = createInsertSchema(paymentMethods, {}).omit({
   id: true,
+  userId: true,
   createdAt: true,
   updatedAt: true,
 });
