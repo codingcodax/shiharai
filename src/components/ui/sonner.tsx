@@ -5,6 +5,8 @@ import { useTheme } from 'next-themes';
 import { Toaster as Sonner } from 'sonner';
 import { tv } from 'tailwind-variants';
 
+export { toast } from 'sonner';
+
 const sonnerStyles = tv({
   slots: {
     base: 'toaster group',
