@@ -75,20 +75,38 @@ export const NewSubscriptionBillingInfo = NewSubscription.pick({
 });
 
 export type NewPaymentMethod = z.infer<typeof NewPaymentMethod>;
-export const NewPaymentMethod = z.object({
-  type: z.enum([
-    'CREDIT_CARD',
-    'DEBIT_CARD',
-    'PAYPAL',
-    'VENMO',
-    'CASH_APP',
-    'GOOGLE_PAY',
-    'APPLE_PAY',
-    'SAMSUNG_PAY',
-    'BANK_TRANSFER',
-    'OTHER',
-  ]),
-  label: z.string(),
-  expirationDate: z.date().optional(),
-  isDefault: z.boolean(),
-});
+export const NewPaymentMethod = z
+  .object({
+    type: z.enum([
+      'CREDIT_CARD',
+      'DEBIT_CARD',
+      'PAYPAL',
+      'VENMO',
+      'CASH_APP',
+      'GOOGLE_PAY',
+      'APPLE_PAY',
+      'SAMSUNG_PAY',
+      'BANK_TRANSFER',
+      'OTHER',
+    ]),
+    label: z
+      .string({ message: 'Enter a label for the payment method' })
+      .min(1, { message: 'Enter a label for the payment method' }),
+    expirationDate: z.date().optional(),
+    isDefault: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      if (
+        (data.type === 'CREDIT_CARD' || data.type === 'DEBIT_CARD') &&
+        !data.expirationDate
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Enter the expiration date of your credit/debit card',
+      path: ['expirationDate'],
+    },
+  );
