@@ -65,7 +65,7 @@ export const BillingInfoStep = () => {
     schema: NewSubscriptionBillingInfo,
     defaultValues: {
       billingCycle: formData.billingCycle,
-      nextBillingDate: new Date(formData.nextBillingDate),
+      nextBillingDate: formData.nextBillingDate,
       timezone: formData.timezone,
       paymentMethodId: '',
     },
