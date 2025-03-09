@@ -74,7 +74,9 @@ export const NewSubscriptionContextProvider = ({
     setIsMounted(true);
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      setFormData(JSON.parse(saved) as NewSubscription);
+      const parsed = JSON.parse(saved) as NewSubscription;
+      const convertedNextBillingDate = new Date(parsed.nextBillingDate);
+      setFormData({ ...parsed, nextBillingDate: convertedNextBillingDate });
     }
   }, []);
 
