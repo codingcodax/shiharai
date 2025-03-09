@@ -1,17 +1,40 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { clsx } from 'clsx/lite';
+import { useAction } from 'next-safe-action/hooks';
 
+import { Spinner } from '~/components/icons/spinner';
 import { Button } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
+import { toast } from '~/components/ui/sonner';
 import { api } from '~/trpc/react';
+import { newSubscription } from './actions';
 import { useNewSubscriptionContext } from './context';
 
 export const ReviewStep = () => {
+  const router = useRouter();
   const { data: paymentMethods, isLoading: paymentMethodsIsLoading } =
     api.paymentMethod.getAll.useQuery();
-
   const { formData, prevStep } = useNewSubscriptionContext();
+  const utils = api.useUtils();
+  const { execute: createSubscription, isPending } = useAction(
+    newSubscription,
+    {
+      onSuccess: async () => {
+        await utils.subscription.getAll.invalidate();
+        router.push('/subscriptions');
+        toast.success('Subscription created successfully.');
+      },
+      onError: () => {
+        toast.error('An error occurred while creating the subscription.');
+      },
+    },
+  );
+
+  const handleCreateSubscription = () => {
+    createSubscription(formData);
+  };
 
   return (
     <div className='space-y-6'>
@@ -161,7 +184,14 @@ export const ReviewStep = () => {
           <Button className='flex-1' variant='outline' onClick={prevStep}>
             Previous
           </Button>
-          <Button className='flex-1'>Create Subscription</Button>
+          <Button
+            className='flex-1'
+            disabled={isPending}
+            onClick={handleCreateSubscription}
+          >
+            {isPending && <Spinner />}
+            Create
+          </Button>
         </div>
       </div>
     </div>
