@@ -12,7 +12,7 @@ const cellStyles = tv({
       'relative inline-flex w-full gap-x-1 overflow-hidden px-4 py-2.5 text-left text-sm/6 text-grey-text-contrast outline-none transition-colors duration-200',
       'hover:bg-grey-bg-subtle',
       'active:bg-grey-bg',
-      'focus-visible:ring-4 focus-visible:ring-primary-focus-ring',
+      'focus-visible:z-[1] focus-visible:ring-4 focus-visible:ring-primary-focus-ring',
       '[&>svg]:h-6 [&>svg]:w-4',
     ),
     cellBody: 'flex-1',
