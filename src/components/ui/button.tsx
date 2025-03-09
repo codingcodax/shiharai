@@ -33,7 +33,7 @@ export const buttonStyles = tv({
       large: clsx('text-md h-10 gap-x-2.5 rounded-xl px-4', '[&_svg]:size-5'),
     },
     icon: {
-      true: '',
+      true: 'shrink-0',
     },
   },
   compoundVariants: [
