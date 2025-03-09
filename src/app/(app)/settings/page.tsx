@@ -1,13 +1,7 @@
 import { Suspense } from 'react';
 
-import {
-  Cell,
-  CellBody,
-  CellGroup,
-  Cells,
-  CellTitle,
-  CellValue,
-} from '~/components/ui/cell';
+import { CellGroup, Cells } from '~/components/ui/cell';
+import { CurrencyCell } from './_components/currency-cell';
 import { ThemeCell } from './_components/theme-cell';
 import { UserProfile, UserProfileSkeleton } from './_components/user-profile';
 
@@ -26,14 +20,7 @@ const Page = async () => {
         <div className='mt-10'>
           <CellGroup>
             <Cells>
-              <Cell>
-                <CellBody>
-                  <CellTitle>Default Currency</CellTitle>
-                </CellBody>
-                <CellBody>
-                  <CellValue>Mexican Peso</CellValue>
-                </CellBody>
-              </Cell>
+              <CurrencyCell />
 
               <ThemeCell />
             </Cells>
