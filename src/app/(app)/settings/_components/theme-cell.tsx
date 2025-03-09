@@ -20,6 +20,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '~/components/ui/drawer';
+import { Skeleton } from '~/components/ui/skeleton';
 import { capitalize } from '~/utils/capitalize';
 
 export const ThemeCell = () => {
@@ -35,6 +36,9 @@ export const ThemeCell = () => {
       <Cell>
         <CellBody>
           <CellTitle>Theme</CellTitle>
+        </CellBody>
+        <CellBody>
+          <Skeleton className='my-[5px] ml-auto h-3.5 w-8' />
         </CellBody>
       </Cell>
     );
