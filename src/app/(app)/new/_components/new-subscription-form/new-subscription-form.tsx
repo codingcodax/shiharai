@@ -4,6 +4,7 @@ import { Progress } from '~/components/ui/progress';
 import { BillingInfoStep } from './billing-info-step';
 import { SubscriptionStep, useNewSubscriptionContext } from './context';
 import { DetailsStep } from './details-step';
+import { ReviewStep } from './review-step';
 
 export const NewSubscriptionForm = () => {
   const { currentStep, steps } = useNewSubscriptionContext();
@@ -26,6 +27,7 @@ export const NewSubscriptionForm = () => {
 
       {currentStep === SubscriptionStep.DETAILS && <DetailsStep />}
       {currentStep === SubscriptionStep.BILLING && <BillingInfoStep />}
+      {currentStep === SubscriptionStep.REVIEW && <ReviewStep />}
     </div>
   );
 };
