@@ -428,7 +428,11 @@ export const BillingInfoStep = () => {
             >
               Previous
             </Button>
-            <Button className='flex-1' type='submit'>
+            <Button
+              className='flex-1'
+              disabled={paymentMethodsIsLoading}
+              type='submit'
+            >
               Next
             </Button>
           </div>
