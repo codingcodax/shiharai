@@ -38,7 +38,7 @@ export const ThemeCell = () => {
           <CellTitle>Theme</CellTitle>
         </CellBody>
         <CellBody>
-          <Skeleton className='my-[5px] ml-auto h-3.5 w-8' />
+          <Skeleton className='my-[5px] ml-auto h-3.5 w-12' />
         </CellBody>
       </Cell>
     );
