@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import { clsx } from 'clsx/lite';
@@ -25,18 +25,24 @@ import {
   useForm,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '~/components/ui/popover';
+import { Skeleton } from '~/components/ui/skeleton';
 import { Switch } from '~/components/ui/switch';
 import { Textarea } from '~/components/ui/textarea';
 import { currencies } from '~/config/currencies';
+import { api } from '~/trpc/react';
 import { useNewSubscriptionContext } from './context';
 import { NewSubscriptionDetails } from './schema';
 
 export const DetailsStep = () => {
+  const { data: user, isLoading: userIsLoading } = api.user.getById.useQuery(
+    {},
+  );
   const [currencyIsOpen, setCurrencyIsOpen] = useState(false);
   const currencyButtonRef = useRef<HTMLButtonElement>(null);
   const { formData, updateFormData, nextStep } = useNewSubscriptionContext();
@@ -60,6 +66,15 @@ export const DetailsStep = () => {
     updateFormData(data);
     nextStep();
   };
+
+  useEffect(() => {
+    if (user) {
+      const defaultCurrency = user.currency ?? 'USD';
+
+      form.setValue('currency', defaultCurrency);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, form.setValue]);
 
   return (
     <div className='space-y-6'>
@@ -166,118 +181,135 @@ export const DetailsStep = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name='currency'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <Popover
-                    open={currencyIsOpen}
-                    onOpenChange={setCurrencyIsOpen}
-                  >
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          ref={currencyButtonRef}
-                          className='w-full justify-between font-normal'
-                          role='combobox'
-                          variant='outline'
-                        >
-                          {field.value ? (
-                            <div className='space-x-2'>
-                              <span className='max-w-full truncate'>
-                                {
-                                  currencies[
-                                    field.value as keyof typeof currencies
-                                  ].name
-                                }
-                              </span>
-                              <span className='max-w-full flex-1 truncate text-xs/5 text-grey-text'>
-                                {field.value} (
-                                {
-                                  currencies[
-                                    field.value as keyof typeof currencies
-                                  ].symbol
-                                }
-                                )
-                              </span>
-                            </div>
-                          ) : (
-                            <span>Select currency</span>
-                          )}
-                          <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className='p-0'
-                      style={{
-                        width: `${currencyButtonRef.current?.clientWidth}px`,
-                      }}
+            {userIsLoading && (
+              <div className='space-y-2'>
+                <Label>Currency</Label>
+                <Skeleton className='h-9 w-full' />
+              </div>
+            )}
+
+            {user ? (
+              <FormField
+                control={form.control}
+                name='currency'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Currency</FormLabel>
+                    <Popover
+                      open={currencyIsOpen}
+                      onOpenChange={setCurrencyIsOpen}
                     >
-                      <Command
-                        filter={(value, search) => {
-                          const currency =
-                            currencies?.[value as keyof typeof currencies];
-                          if (!currency) return 0;
-
-                          const searchLower = search.toLowerCase();
-
-                          const result =
-                            Number(value.toLowerCase().includes(searchLower)) ||
-                            Number(
-                              currency.name.toLowerCase().includes(searchLower),
-                            ) ||
-                            Number(
-                              currency.symbol
-                                .toLowerCase()
-                                .includes(searchLower),
-                            );
-
-                          return result;
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            ref={currencyButtonRef}
+                            className='w-full justify-between font-normal'
+                            role='combobox'
+                            variant='outline'
+                          >
+                            {field.value ? (
+                              <div className='space-x-2'>
+                                <span className='max-w-full truncate'>
+                                  {
+                                    currencies[
+                                      field.value as keyof typeof currencies
+                                    ].name
+                                  }
+                                </span>
+                                <span className='max-w-full flex-1 truncate text-xs/5 text-grey-text'>
+                                  {field.value} (
+                                  {
+                                    currencies[
+                                      field.value as keyof typeof currencies
+                                    ].symbol
+                                  }
+                                  )
+                                </span>
+                              </div>
+                            ) : (
+                              <span>Select currency</span>
+                            )}
+                            <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className='p-0'
+                        style={{
+                          width: `${currencyButtonRef.current?.clientWidth}px`,
                         }}
                       >
-                        <CommandInput
-                          className='h-9'
-                          placeholder='Search currency...'
-                        />
-                        <CommandList>
-                          <CommandEmpty>No resource group found.</CommandEmpty>
-                          <CommandGroup className='max-h-[30vh] overflow-auto'>
-                            {Object.entries(currencies).map(([name, value]) => (
-                              <CommandItem
-                                key={name}
-                                className='gap-x-2'
-                                value={name}
-                                onSelect={() => {
-                                  form.setValue('currency', name);
-                                  setCurrencyIsOpen(false);
-                                }}
-                              >
-                                <span>{value.name} </span>
-                                <span className='text-xs/5 text-grey-text'>
-                                  {name} ({value.symbol})
-                                </span>
-                                <CheckIcon
-                                  className={clsx(
-                                    'ml-auto h-4 w-4',
-                                    name === field.value
-                                      ? 'opacity-100'
-                                      : 'opacity-0',
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                        <Command
+                          filter={(value, search) => {
+                            const currency =
+                              currencies?.[value as keyof typeof currencies];
+                            if (!currency) return 0;
+
+                            const searchLower = search.toLowerCase();
+
+                            const result =
+                              Number(
+                                value.toLowerCase().includes(searchLower),
+                              ) ||
+                              Number(
+                                currency.name
+                                  .toLowerCase()
+                                  .includes(searchLower),
+                              ) ||
+                              Number(
+                                currency.symbol
+                                  .toLowerCase()
+                                  .includes(searchLower),
+                              );
+
+                            return result;
+                          }}
+                        >
+                          <CommandInput
+                            className='h-9'
+                            placeholder='Search currency...'
+                          />
+                          <CommandList>
+                            <CommandEmpty>
+                              No resource group found.
+                            </CommandEmpty>
+                            <CommandGroup className='max-h-[30vh] overflow-auto'>
+                              {Object.entries(currencies).map(
+                                ([name, value]) => (
+                                  <CommandItem
+                                    key={name}
+                                    className='gap-x-2'
+                                    value={name}
+                                    onSelect={() => {
+                                      form.setValue('currency', name);
+                                      setCurrencyIsOpen(false);
+                                    }}
+                                  >
+                                    <span>{value.name} </span>
+                                    <span className='text-xs/5 text-grey-text'>
+                                      {name} ({value.symbol})
+                                    </span>
+                                    <CheckIcon
+                                      className={clsx(
+                                        'ml-auto h-4 w-4',
+                                        name === field.value
+                                          ? 'opacity-100'
+                                          : 'opacity-0',
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ),
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
             <Collapsible.Root
               className='space-y-4'
@@ -433,7 +465,7 @@ export const DetailsStep = () => {
           </div>
 
           <div className='flex gap-x-2'>
-            <Button className='flex-1' type='submit'>
+            <Button className='flex-1' disabled={userIsLoading} type='submit'>
               Next
             </Button>
           </div>
