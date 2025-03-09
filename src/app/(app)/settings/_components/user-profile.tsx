@@ -40,7 +40,7 @@ export const UserProfileSkeleton = () => {
         <Skeleton className='my-1 h-4 w-36' />
       </div>
 
-      <Skeleton className='mt-4 h-9 w-[122.45px] rounded-lg' />
+      <Skeleton className='mt-4 h-9 w-[122.45px]' />
     </div>
   );
 };
