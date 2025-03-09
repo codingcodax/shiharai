@@ -57,6 +57,7 @@ export const NewSubscriptionContextProvider = ({
     tier: '',
     url: '',
     notes: '',
+    paymentMethodId: '',
   };
 
   const steps = [
