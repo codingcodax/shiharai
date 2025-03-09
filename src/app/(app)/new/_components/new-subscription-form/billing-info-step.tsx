@@ -1,9 +1,12 @@
-import { useId, useRef, useState } from 'react';
+'use client';
+
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   CalendarIcon,
   CaretSortIcon,
   CheckIcon,
   ClockIcon,
+  PlusIcon,
 } from '@radix-ui/react-icons';
 import { clsx } from 'clsx/lite';
 import { format } from 'date-fns';
@@ -41,23 +44,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
+import { Skeleton } from '~/components/ui/skeleton';
 import { timezones } from '~/config/timezones';
+import { api } from '~/trpc/react';
 import { useNewSubscriptionContext } from './context';
+import { NewPaymentMethodDrawer } from './new-payment-method-drawer';
 import { NewSubscriptionBillingInfo } from './schema';
 
 export const BillingInfoStep = () => {
+  const { data: paymentMethods, isLoading: paymentMethodsIsLoading } =
+    api.paymentMethod.getAll.useQuery();
   const [timezoneIsOpen, setTimezoneIsOpen] = useState(false);
   const timezoneButtonRef = useRef<HTMLButtonElement>(null);
+  const [paymentMethodIsOpen, setPaymentMethodIsOpen] = useState(false);
+  const paymentMethodButtonRef = useRef<HTMLButtonElement>(null);
   const timeId = useId();
   const { formData, updateFormData, prevStep, nextStep } =
     useNewSubscriptionContext();
-
   const form = useForm({
     schema: NewSubscriptionBillingInfo,
     defaultValues: {
       billingCycle: formData.billingCycle,
-      nextBillingDate: formData.nextBillingDate,
+      nextBillingDate: new Date(formData.nextBillingDate),
       timezone: formData.timezone,
+      paymentMethodId: '',
     },
   });
 
@@ -65,6 +75,19 @@ export const BillingInfoStep = () => {
     updateFormData(data);
     nextStep();
   };
+
+  useEffect(() => {
+    if (paymentMethods && paymentMethods.length > 0) {
+      const defaultPaymentMethod = paymentMethods.find(
+        (paymentMethod) => paymentMethod.isDefault,
+      );
+
+      if (defaultPaymentMethod) {
+        form.setValue('paymentMethodId', defaultPaymentMethod.id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentMethods, form.setValue]);
 
   return (
     <div className='space-y-6'>
@@ -128,6 +151,7 @@ export const BillingInfoStep = () => {
                     <PopoverContent align='start' className='w-auto p-0'>
                       <Calendar
                         autoFocus
+                        className='p-2'
                         disabled={(date) =>
                           date <
                             new Date(
@@ -267,6 +291,132 @@ export const BillingInfoStep = () => {
                 </FormItem>
               )}
             />
+
+            {paymentMethodsIsLoading && (
+              <div className='space-y-2'>
+                <Label>Payment Method</Label>
+                <div className='flex gap-x-2'>
+                  <Skeleton className='w-full' />
+                  <Skeleton className='size-9 shrink-0' />
+                </div>
+              </div>
+            )}
+
+            {paymentMethods && paymentMethods?.length > 0 ? (
+              <FormField
+                control={form.control}
+                name='paymentMethodId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Payment Method</FormLabel>
+                    <div className='flex gap-x-2'>
+                      <Popover
+                        open={paymentMethodIsOpen}
+                        onOpenChange={setPaymentMethodIsOpen}
+                      >
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              ref={paymentMethodButtonRef}
+                              className='w-full justify-between font-normal'
+                              role='combobox'
+                              variant='outline'
+                            >
+                              <span className='truncate'>
+                                {field.value
+                                  ? paymentMethods.find(
+                                      (paymentMethod) =>
+                                        paymentMethod.id === field.value,
+                                    )?.label
+                                  : 'Select a payment method'}
+                              </span>
+                              <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className='p-0'
+                          style={{
+                            width: `${paymentMethodButtonRef.current?.clientWidth}px`,
+                          }}
+                        >
+                          <Command
+                            filter={(value, search) => {
+                              const normalizedValue = value.toLowerCase();
+                              const normalizedSearch = search
+                                .toLowerCase()
+                                .replace(/\s+/g, '');
+                              return normalizedValue.includes(normalizedSearch)
+                                ? 1
+                                : 0;
+                            }}
+                          >
+                            <CommandInput placeholder='Search payment method...' />
+                            <CommandList>
+                              <CommandEmpty>
+                                No payment method found.
+                              </CommandEmpty>
+                              <CommandGroup className='max-h-[30vh] overflow-auto'>
+                                {paymentMethods.map((paymentMethod) => (
+                                  <CommandItem
+                                    key={paymentMethod.id}
+                                    value={paymentMethod.id}
+                                    onSelect={() => {
+                                      form.setValue(
+                                        'paymentMethodId',
+                                        paymentMethod.id,
+                                      );
+                                      setPaymentMethodIsOpen(false);
+                                    }}
+                                  >
+                                    {paymentMethod.label}
+                                    <CheckIcon
+                                      className={clsx(
+                                        'ml-auto h-4 w-4',
+                                        paymentMethod.id === field.value
+                                          ? 'opacity-100'
+                                          : 'opacity-0',
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+
+                      <NewPaymentMethodDrawer>
+                        <Button icon variant='outline'>
+                          <PlusIcon />
+                          <span className='sr-only'>
+                            Create a payment method
+                          </span>
+                        </Button>
+                      </NewPaymentMethodDrawer>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            {paymentMethods && paymentMethods?.length <= 0 ? (
+              <div className='space-y-2'>
+                <NewPaymentMethodDrawer>
+                  <Button className='w-full' variant='outline'>
+                    <PlusIcon />
+                    Create a payment method
+                  </Button>
+                </NewPaymentMethodDrawer>
+
+                {form.formState.errors.paymentMethodId && (
+                  <p className='text-sm font-medium text-error-solid'>
+                    A payment method is needed to create your subscription.
+                  </p>
+                )}
+              </div>
+            ) : null}
           </div>
 
           <div className='flex gap-x-2'>
