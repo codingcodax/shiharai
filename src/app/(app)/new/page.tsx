@@ -1,23 +1,16 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
-const NewSubscriptionForm = dynamic(
-  () =>
-    import('./_components/new-subscription-form').then(
-      (mod) => mod.NewSubscriptionForm,
-    ),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <p>here will go the skeleton</p>
-      </div>
-    ),
-  },
-);
+import { NewSubscriptionForm } from './_components/new-subscription-form';
 
 const Page = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) return <div />;
+
   return (
     <div className='pb-[59px]'>
       <NewSubscriptionForm />
