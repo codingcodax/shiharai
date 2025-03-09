@@ -10,21 +10,23 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { toast } from '~/components/ui/sonner';
 import { api } from '~/trpc/react';
 import { newSubscription } from './actions';
-import { useNewSubscriptionContext } from './context';
+import { SubscriptionStep, useNewSubscriptionContext } from './context';
 
 export const ReviewStep = () => {
   const router = useRouter();
   const { data: paymentMethods, isLoading: paymentMethodsIsLoading } =
     api.paymentMethod.getAll.useQuery();
-  const { formData, prevStep } = useNewSubscriptionContext();
+  const { formData, prevStep, setStep, clearFormData } =
+    useNewSubscriptionContext();
   const utils = api.useUtils();
   const { execute: createSubscription, isPending } = useAction(
     newSubscription,
     {
       onSuccess: async () => {
-        await utils.subscription.getAll.invalidate();
         router.push('/subscriptions');
+        await utils.subscription.getAll.invalidate();
         toast.success('Subscription created successfully.');
+        clearFormData();
       },
       onError: () => {
         toast.error('An error occurred while creating the subscription.');
@@ -53,12 +55,12 @@ export const ReviewStep = () => {
                 Details
               </h3>
               <Button
-                disabled
                 className={clsx(
-                  'h-10 px-4 font-medium',
+                  'h-10 rounded-l-none px-4 font-medium',
                   'disabled:text-grey-text disabled:line-through',
                 )}
                 variant='ghost'
+                onClick={() => setStep(SubscriptionStep.DETAILS)}
               >
                 Edit
               </Button>
@@ -126,12 +128,12 @@ export const ReviewStep = () => {
                 Billing Info
               </h3>
               <Button
-                disabled
                 className={clsx(
-                  'h-10 px-4 font-medium',
+                  'h-10 rounded-l-none px-4 font-medium',
                   'disabled:text-grey-text disabled:line-through',
                 )}
                 variant='ghost'
+                onClick={() => setStep(SubscriptionStep.BILLING)}
               >
                 Edit
               </Button>
