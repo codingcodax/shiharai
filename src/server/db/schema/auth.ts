@@ -38,7 +38,7 @@ export const users = createTable('user', {
   })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`)
-    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+    .$onUpdate(() => sql`NOW()`),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
