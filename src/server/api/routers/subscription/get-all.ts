@@ -8,6 +8,9 @@ export const getAll = protectedProcedure.query(async ({ ctx }) => {
   try {
     return await ctx.db.query.subscriptions.findMany({
       where: eq(subscriptions.userId, ctx.session.user.id),
+      with: {
+        paymentMethod: { columns: { type: true, label: true } },
+      },
     });
   } catch {
     throw new TRPCError({
