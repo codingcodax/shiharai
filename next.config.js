@@ -14,6 +14,12 @@ const config = {
         port: '',
         pathname: '/u/*',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.google.com',
+        port: '',
+        pathname: '/s2/*',
+      },
     ],
   },
 };
