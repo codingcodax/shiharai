@@ -14,7 +14,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   category: categoryRouter,
   paymentMethod: paymentMethodRouter,
-  subscription: subscriptionRouter,
+  sub: subscriptionRouter,
   user: userRouter,
 });
 
