@@ -12,7 +12,7 @@ import { api } from '~/trpc/server';
 import { getApexDomain } from '~/utils/domains';
 
 const Page = async () => {
-  const subscriptions = await api.subscription.getAll();
+  const subscriptions = await api.sub.getAll();
 
   return (
     <div>

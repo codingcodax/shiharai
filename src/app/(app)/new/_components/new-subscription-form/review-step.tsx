@@ -24,7 +24,7 @@ export const ReviewStep = () => {
     {
       onSuccess: async () => {
         router.push('/subscriptions');
-        await utils.subscription.getAll.invalidate();
+        await utils.sub.getAll.invalidate();
         toast.success('Subscription created successfully.');
         clearFormData();
       },

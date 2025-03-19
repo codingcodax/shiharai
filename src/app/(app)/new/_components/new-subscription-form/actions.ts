@@ -27,7 +27,7 @@ export const newSubscription = action
   .schema(NewSubscription)
   .action(async ({ parsedInput: input }) => {
     try {
-      await api.subscription.create(input);
+      await api.sub.create(input);
     } catch (error) {
       if (!(error instanceof TRPCError)) throw error;
 
