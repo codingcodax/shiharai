@@ -8,7 +8,7 @@ const Page = () => {
   };
 
   return (
-    <div className='grid h-screen w-full grid-rows-2 gap-8 p-4'>
+    <div className='grid h-dvh w-full grid-rows-2 gap-8 p-4'>
       <div className='h-full rounded-3xl bg-grey-bg' />
 
       <div className='flex w-full flex-col justify-between gap-4'>
