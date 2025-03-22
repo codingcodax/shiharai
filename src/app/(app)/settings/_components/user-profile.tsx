@@ -23,7 +23,7 @@ export const UserProfile = async () => {
         <p className='text-grey-text'>{user.email}</p>
       </div>
 
-      <Button>
+      <Button disabled>
         Edit profile <ChevronRightIcon />
       </Button>
     </div>
