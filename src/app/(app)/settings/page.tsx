@@ -2,7 +2,10 @@ import { Suspense } from 'react';
 
 import { CellGroup, Cells } from '~/components/ui/cell';
 import { CurrencyCell } from './_components/currency-cell';
-import { PaymentMethodCell } from './_components/payment-method-cell';
+import {
+  PaymentMethodCell,
+  PaymentMethodSkeleton,
+} from './_components/payment-method-cell';
 import { ThemeCell } from './_components/theme-cell';
 import { UserProfile, UserProfileSkeleton } from './_components/user-profile';
 
@@ -25,7 +28,9 @@ const Page = async () => {
 
               <ThemeCell />
 
-              <PaymentMethodCell />
+              <Suspense fallback={<PaymentMethodSkeleton />}>
+                <PaymentMethodCell />
+              </Suspense>
             </Cells>
           </CellGroup>
         </div>
