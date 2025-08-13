@@ -1,12 +1,12 @@
-import { type Config } from 'drizzle-kit';
+import type { Config } from "drizzle-kit";
 
-import { env } from '~/env';
-
-const nonPoolingUrl = env.POSTGRES_URL.replace(':6543', ':5432');
+import { env } from "~/env";
 
 export default {
-  schema: './src/server/db/schema',
-  dialect: 'postgresql',
-  dbCredentials: { url: nonPoolingUrl },
-  tablesFilter: ['shiharai_*'],
+	schema: "./src/server/db/schema.ts",
+	dialect: "postgresql",
+	dbCredentials: {
+		url: env.DATABASE_URL,
+	},
+	tablesFilter: ["shiharai_*"],
 } satisfies Config;

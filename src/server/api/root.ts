@@ -1,9 +1,5 @@
-import { authRouter } from '~/server/api/routers/auth';
-import { categoryRouter } from '~/server/api/routers/category';
-import { paymentMethodRouter } from '~/server/api/routers/payment-method';
-import { subscriptionRouter } from '~/server/api/routers/subscription';
-import { userRouter } from '~/server/api/routers/user';
-import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+import { postRouter } from "~/server/api/routers/post";
+import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
  * This is the primary router for your server.
@@ -11,11 +7,7 @@ import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  auth: authRouter,
-  category: categoryRouter,
-  paymentMethod: paymentMethodRouter,
-  sub: subscriptionRouter,
-  user: userRouter,
+	post: postRouter,
 });
 
 // export type definition of API
