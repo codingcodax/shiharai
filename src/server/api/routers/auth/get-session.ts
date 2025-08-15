@@ -1,4 +1,4 @@
-import { protectedProcedure } from "../../trpc";
+import { protectedProcedure } from '../../trpc';
 
 export const getSession = protectedProcedure.query(async ({ ctx }) => {
 	return ctx.session;
