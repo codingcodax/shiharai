@@ -2,19 +2,37 @@
 	"name": "shiharai",
 	"version": "0.1.0",
 	"private": true,
+	"description": "Track, organize, and manage all your subscriptions in one place with ease.",
+	"keywords": [
+		"subscription",
+		"expense-tracker",
+		"subscription-manager"
+	],
+	"homepage": "https://shiharai.codingcodax.com",
+	"bugs": {
+		"url": "https://github.com/codingcodax/shiharai/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/codingcodax/shiharai.git"
+	},
+	"author": {
+		"name": "Alexis Guzman",
+		"url": "https://github.com/codingcodax"
+	},
 	"type": "module",
 	"scripts": {
 		"build": "next build",
 		"check": "biome check .",
-		"check:unsafe": "biome check --write --unsafe .",
 		"check:fix": "biome check --write .",
-		"format": "biome format .",
-		"format:fix": "biome format --write .",
+		"check:unsafe": "biome check --write --unsafe .",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"dev": "next dev --turbo",
+		"format": "biome format .",
+		"format:fix": "biome format --write .",
 		"preview": "next build && next start",
 		"start": "next start",
 		"typecheck": "tsc --noEmit"
@@ -47,8 +65,8 @@
 		"tailwindcss": "^4.1.12",
 		"typescript": "^5.9.2"
 	},
+	"packageManager": "pnpm@10.14.0",
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
-	},
-	"packageManager": "pnpm@10.14.0"
+	}
 }
