@@ -1,4 +1,4 @@
-import { text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { boolean, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { createTable } from './_table';
 
