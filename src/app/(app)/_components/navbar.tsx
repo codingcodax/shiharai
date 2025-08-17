@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 import {
 	BellIcon,
 	HomeIcon,
@@ -9,7 +10,6 @@ import {
 	PlusIcon,
 	SettingsIcon,
 } from 'lucide-react';
-
 import {
 	Tabbar,
 	TabbarIcon,

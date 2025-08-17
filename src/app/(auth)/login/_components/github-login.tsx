@@ -1,11 +1,10 @@
 'use client';
 
+import { GitHubIcon } from '~/components/icons/github';
 import { Button } from '~/components/ui/button';
 import { Spinner } from '~/components/ui/spinner';
 import { useBoolean } from '~/hooks/use-boolean';
 import { signIn } from '~/server/auth/client';
-
-import { GitHubIcon } from '~/components/icons/github';
 
 export const GithubLogin = () => {
 	const { value: isLoading, setValue: setIsLoading } = useBoolean();
