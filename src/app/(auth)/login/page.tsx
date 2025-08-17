@@ -1,30 +1,30 @@
 import {
 	Card,
+	CardContent,
+	CardDescription,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardContent,
 } from '~/components/ui/card';
 import { GithubLogin } from './_components/github-login';
 
 const Page = () => {
 	return (
-		<div className='h-dvh p-4 flex flex-col'>
-			<div className='absolute inset-0 bg-black/20 z-10' />
+		<div className='flex h-dvh flex-col p-4'>
+			<div className='absolute inset-0 z-10 bg-black/20' />
 
-			<div className='flex-1 flex items-center justify-center relative z-0'>
+			<div className='relative z-0 flex flex-1 items-center justify-center'>
 				<div className='relative'>
 					<div className='absolute inset-0 flex items-center justify-center'>
-						<div className='size-32 shrink-0 border rounded-full' />
+						<div className='size-32 shrink-0 rounded-full border' />
 					</div>
 					<div className='absolute inset-0 flex items-center justify-center'>
-						<div className='size-40 shrink-0 border rounded-full opacity-80' />
+						<div className='size-40 shrink-0 rounded-full border opacity-80' />
 					</div>
 					<div className='absolute inset-0 flex items-center justify-center'>
-						<div className='size-48 shrink-0 border rounded-full opacity-60' />
+						<div className='size-48 shrink-0 rounded-full border opacity-60' />
 					</div>
 
-					<div className='size-16 bg-primary rounded-lg relative z-10'></div>
+					<div className='relative z-10 size-16 rounded-lg bg-primary'></div>
 				</div>
 			</div>
 
