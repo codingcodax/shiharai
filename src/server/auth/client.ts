@@ -4,4 +4,5 @@ export const authClient = createAuthClient({});
 
 export const { signIn, signOut, useSession } = authClient;
 
-export const signInWithGithub = () => signIn.social({ provider: 'github' });
+export const signInWithGithub = () =>
+	signIn.social({ provider: 'github', callbackURL: '/dashboard' });
