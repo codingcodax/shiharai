@@ -1,4 +1,4 @@
-CREATE TABLE "shiharai_account" (
+CREATE TABLE IF NOT EXISTS "shiharai_account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE "shiharai_account" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "shiharai_session" (
+CREATE TABLE IF NOT EXISTS "shiharai_session" (
 	"id" text PRIMARY KEY NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	"token" text NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "shiharai_session" (
 	CONSTRAINT "shiharai_session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
-CREATE TABLE "shiharai_user" (
+CREATE TABLE IF NOT EXISTS "shiharai_user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"email" text NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "shiharai_user" (
 	CONSTRAINT "shiharai_user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE "shiharai_verification" (
+CREATE TABLE IF NOT EXISTS "shiharai_verification" (
 	"id" text PRIMARY KEY NOT NULL,
 	"identifier" text NOT NULL,
 	"value" text NOT NULL,
@@ -46,5 +46,5 @@ CREATE TABLE "shiharai_verification" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
-ALTER TABLE "shiharai_account" ADD CONSTRAINT "shiharai_account_user_id_shiharai_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."shiharai_user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "shiharai_session" ADD CONSTRAINT "shiharai_session_user_id_shiharai_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."shiharai_user"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "shiharai_account" ADD CONSTRAINT IF NOT EXISTS "shiharai_account_user_id_shiharai_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."shiharai_user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shiharai_session" ADD CONSTRAINT IF NOT EXISTS "shiharai_session_user_id_shiharai_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."shiharai_user"("id") ON DELETE cascade ON UPDATE no action;
