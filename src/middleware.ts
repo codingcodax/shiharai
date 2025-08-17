@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse, userAgent } from 'next/server';
 import { headers } from 'next/headers';
+import { type NextRequest, NextResponse, userAgent } from 'next/server';
 import { auth } from '~/server/auth';
 
 export const middleware = async (req: NextRequest) => {

@@ -3,7 +3,7 @@ import { LaptopMinimalIcon, XIcon } from 'lucide-react';
 const Page = () => {
 	return (
 		<div
-			className='flex items-center justify-center p-4 h-screen'
+			className='flex h-screen items-center justify-center p-4'
 			style={{
 				backgroundImage: `
               repeating-linear-gradient(
@@ -28,11 +28,11 @@ const Page = () => {
 					'radial-gradient(circle at center, black 0%, black 30%, transparent 70%)',
 			}}
 		>
-			<div className='max-w-md text-center p-6 border bg-background'>
-				<div className='mb-6 space-y-1 flex items-center justify-center flex-col'>
+			<div className='max-w-md border bg-background p-6 text-center'>
+				<div className='mb-6 flex flex-col items-center justify-center space-y-1'>
 					<div className='relative'>
 						<LaptopMinimalIcon className='size-16' />
-						<div className='size-5 top-0.5 -right-0 bg-foreground rounded-full absolute flex items-center justify-center'>
+						<div className='-right-0 absolute top-0.5 flex size-5 items-center justify-center rounded-full bg-foreground'>
 							<XIcon className='size-3 text-background' />
 						</div>
 					</div>
@@ -44,7 +44,7 @@ const Page = () => {
 					</h1>
 				</div>
 
-				<h2 className='text-muted-foreground text-lg'>
+				<h2 className='text-lg text-muted-foreground'>
 					This app is designed exclusively for mobile devices and doesn't
 					support desktop browsers.
 				</h2>
