@@ -10,6 +10,12 @@ export const user = createTable('user', {
 		.$defaultFn(() => false)
 		.notNull(),
 	image: text('image'),
+	timezone: text('timezone')
+		.$defaultFn(() => 'America/New_York')
+		.notNull(),
+	currency: text('currency')
+		.$defaultFn(() => 'USD')
+		.notNull(),
 	createdAt: timestamp('created_at')
 		.$defaultFn(() => /* @__PURE__ */ new Date())
 		.notNull(),
