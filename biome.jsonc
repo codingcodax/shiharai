@@ -42,5 +42,40 @@
 			"indentStyle": "tab",
 			"indentWidth": 2
 		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"useSortedAttributes": {
+					"level": "on",
+					"options": {
+						"sortOrder": "natural"
+					}
+				},
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							{ "type": true, "source": ":NODE:" },
+							":NODE:",
+							{ "type": true, "source": ["react", "react/**"] },
+							["react", "react/**"],
+							{ "type": true, "source": ["next", "next/**"] },
+							["next", "next/**"],
+							{ "type": true, "source": [":PACKAGE:", "!*react*", "!*next*"] },
+							[":PACKAGE:", "!*react*", "!*next*"],
+							":BLANK_LINE:",
+							{ "type": true, "source": "^~/" },
+							"^~/",
+							{ "type": true, "source": "^../" },
+							"^../",
+							{ "type": true, "source": "^./" },
+							"^./"
+						]
+					}
+				}
+			}
+		}
 	}
 }
