@@ -1,16 +1,36 @@
 'use client';
 
 import { Button } from '~/components/ui/button';
-import { signInWithGithub } from '~/server/auth/client';
+import { Spinner } from '~/components/ui/spinner';
+import { useBoolean } from '~/hooks/use-boolean';
+import { signIn } from '~/server/auth/client';
+
+import { GitHubIcon } from '~/components/icons/github';
 
 export const GithubLogin = () => {
+	const { value: isLoading, setValue: setIsLoading } = useBoolean();
+	const handleLogIn = () =>
+		signIn.social(
+			{ provider: 'github', callbackURL: '/dashboard' },
+			{
+				onRequest: () => setIsLoading(true),
+				onResponse: () => setIsLoading(false),
+			},
+		);
+
 	return (
 		<Button
 			className='w-full'
-			variant='outline'
+			disabled={isLoading}
+			onClick={handleLogIn}
 			size='lg'
-			onClick={() => signInWithGithub()}
+			variant='outline'
 		>
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<GitHubIcon color='currentColor' fill='currentColor' />
+			)}
 			Continue with GitHub
 		</Button>
 	);
