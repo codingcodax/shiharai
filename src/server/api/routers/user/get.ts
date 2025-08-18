@@ -3,6 +3,7 @@ import { eq, or } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { user } from '~/server/db/schema';
+import type { RouterOutputs } from '~/trpc/react';
 import { protectedProcedure } from '../../trpc';
 
 const schema = z.object({
@@ -14,28 +15,20 @@ export const get = protectedProcedure
 	.input(schema)
 	.query(async ({ input, ctx }) => {
 		const { id, email } = input;
-		if (!id && !email) {
-			throw new TRPCError({
-				code: 'BAD_REQUEST',
-				message: 'Either id or email must be provided.',
-			});
-		}
 
-		const whereClause =
+		const where =
 			id && email
 				? or(eq(user.id, id), eq(user.email, email))
-				: id
-					? eq(user.id, id)
-					: eq(user.email, email ?? '');
+				: email
+					? eq(user.email, email)
+					: eq(user.id, id ?? ctx.session.user.id);
 
-		const foundUser = await ctx.db
-			.select()
-			.from(user)
-			.where(whereClause)
-			.limit(1);
+		const [foundUser] = await ctx.db.select().from(user).where(where);
 
-		if (!foundUser[0]) {
-			throw new Error('User not found.');
+		if (!foundUser) {
+			throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
 		}
 		return foundUser;
 	});
+
+export type GetUser = RouterOutputs['user']['get'];
