@@ -53,6 +53,7 @@
 		"drizzle-orm": "^0.44.4",
 		"lucide-react": "^0.539.0",
 		"next": "15.4.2-canary.51",
+		"next-safe-action": "^8.0.10",
 		"next-themes": "^0.4.6",
 		"postgres": "^3.4.7",
 		"radix-ui": "^1.4.3",
