@@ -8,6 +8,7 @@ import {
 } from '~/components/ui/cell';
 import { api } from '~/trpc/server';
 import { CurrencyCell } from './_components/currency-cell';
+import { ThemeCell } from './_components/theme-cell';
 import { UserProfile } from './_components/user-profile';
 
 const Page = async () => {
@@ -35,14 +36,7 @@ const Page = async () => {
 							</CellBody>
 						</Cell>
 
-						<Cell disabled>
-							<CellBody>
-								<CellTitle>Theme</CellTitle>
-							</CellBody>
-							<CellBody>
-								<CellValue>Dark</CellValue>
-							</CellBody>
-						</Cell>
+						<ThemeCell />
 					</Cells>
 				</CellGroup>
 			</div>
