@@ -48,6 +48,7 @@ function Cell({ className, asChild, ...props }: CellProps) {
 				'hover:bg-accent',
 				'dark:hover:bg-accent/50',
 				'focus-visible:z-[1] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+				'disabled:pointer-events-none disabled:opacity-50',
 				'[&>svg]:h-6 [&>svg]:w-4',
 				className,
 			)}
