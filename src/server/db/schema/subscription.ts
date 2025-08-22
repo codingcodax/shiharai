@@ -39,6 +39,22 @@ export const subscriptionStatus = createEnum('subscription_status', [
 export const category = createTable('category', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
+	description: text('description'),
+	color: text('color'), // HEX or color name
+	createdAt: timestamp('created_at')
+		.$defaultFn(() => /* @__PURE__ */ new Date())
+		.notNull(),
+	updatedAt: timestamp('updated_at')
+		.$defaultFn(() => /* @__PURE__ */ new Date())
+		.notNull(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+});
+
+export const paymentMethod = createTable('payment_method', {
+	id: text('id').primaryKey(),
+	name: text('name').notNull(),
 	type: paymentType('type').default('CREDIT_CARD').notNull(),
 	expirationDate: timestamp('expiration_date'), // NOTE: only for credit/debit cards
 	status: paymentMethodsStatus('status').default('ACTIVE').notNull(),
@@ -59,6 +75,7 @@ export const subscription = createTable('subscription', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	url: text('url'),
+	tier: text('tier'),
 	notes: text('notes'),
 	price: doublePrecision('price').notNull(),
 	currency: text('currency').notNull(),
